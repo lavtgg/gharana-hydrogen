@@ -1,0 +1,87 @@
+<section class="container-block has-bottom-tabs" style="padding:20px 0 40px;">
+  <div class="page-width">
+    <div style="padding:0 16px;margin-bottom:16px;">
+      <div class="h-kicker">NAMASTE {{ customer.first_name | default: 'friend' | upcase }}</div>
+      <h1 style="font-family:var(--font-heading);font-size:28px;font-weight:700;margin-top:4px;">Your Gharana</h1>
+    </div>
+
+    <div class="account-grid">
+      <aside>
+        <div class="postcard postcard--soft" style="padding:16px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:52px;height:52px;border-radius:14px;background:var(--color-earth);color:var(--color-paper);display:grid;place-items:center;font-family:var(--font-heading);font-weight:700;font-size:22px;">
+              {{ customer.first_name | default: customer.email | slice: 0, 1 | upcase }}
+            </div>
+            <div>
+              <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;">{{ customer.name | default: customer.email }}</div>
+              <div style="font-size:11.5px;color:var(--color-dust);">{{ customer.email }}</div>
+            </div>
+          </div>
+
+          <ul style="list-style:none;padding:0;margin:0;font-size:13.5px;">
+            <li style="padding:10px 0;border-top:1px dashed var(--color-hairline);display:flex;align-items:center;gap:10px;font-weight:600;color:var(--color-saffron-dark);">{%- render 'icon', icon: 'user', size: 16 -%} Overview</li>
+            <li style="padding:10px 0;border-top:1px dashed var(--color-hairline);"><a href="{{ routes.account_addresses_url }}" style="display:flex;align-items:center;gap:10px;">{%- render 'icon', icon: 'home', size: 16 -%} Addresses</a></li>
+            <li style="padding:10px 0;border-top:1px dashed var(--color-hairline);"><a href="{{ routes.account_logout_url }}" style="display:flex;align-items:center;gap:10px;color:var(--color-dust);">{%- render 'icon', icon: 'chevron-right', size: 16 -%} Log out</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <div>
+        <div class="postcard postcard--soft" style="padding:16px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:600;">Recent orders</h2>
+            <a href="{{ routes.account_url }}" style="color:var(--color-saffron);font-weight:700;font-size:12.5px;">View all</a>
+          </div>
+
+          {%- if customer.orders.size > 0 -%}
+            {%- for order in customer.orders limit: 6 -%}
+              <div class="order-line postcard postcard--card postcard--flat" style="filter:none;background:var(--color-cream-deep);">
+                <div>
+                  <a href="{{ order.customer_url }}" class="order-line__num">{{ order.name }}</a>
+                  <div class="order-line__date">{{ order.created_at | date: '%d %b %Y' }} · {{ order.item_count }} items</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;">{{ order.total_price | money_without_trailing_zeros }}</div>
+                  <div class="order-line__status order-line__status--{% if order.financial_status == 'paid' %}paid{% else %}pending{% endif %}" style="display:inline-block;margin-top:4px;">
+                    {{ order.financial_status | capitalize }}
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div style="text-align:center;padding:24px 12px;color:var(--color-dust);font-size:13px;">
+              You haven’t placed any orders yet.
+              <div style="margin-top:12px;"><a href="{{ routes.collections_url }}" class="cart-summary__checkout" style="display:inline-block;padding:12px 22px;width:auto;">Start shopping</a></div>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="postcard postcard--soft" style="padding:16px;">
+          <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:600;margin-bottom:10px;">Default address</h2>
+          {%- if customer.default_address -%}
+            {%- assign a = customer.default_address -%}
+            <div style="font-size:13.5px;line-height:1.7;color:var(--color-espresso);">
+              <div style="font-weight:700;">{{ a.first_name }} {{ a.last_name }}</div>
+              {{ a.address1 }}{% if a.address2 != blank %}, {{ a.address2 }}{% endif %}<br>
+              {{ a.city }}, {{ a.province }} {{ a.zip }}<br>
+              {{ a.country }}<br>
+              {% if a.phone != blank %}☎ {{ a.phone }}{% endif %}
+            </div>
+            <a href="{{ routes.account_addresses_url }}" style="display:inline-block;margin-top:12px;color:var(--color-saffron-dark);font-weight:700;font-size:12.5px;">Manage addresses →</a>
+          {%- else -%}
+            <p style="color:var(--color-dust);font-size:13px;">No addresses saved yet.</p>
+            <a href="{{ routes.account_addresses_url }}" style="display:inline-block;margin-top:8px;color:var(--color-saffron-dark);font-weight:700;">Add address →</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Account",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

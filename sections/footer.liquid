@@ -1,0 +1,81 @@
+<footer class="site-footer">
+  <div class="site-footer__grid">
+    <div>
+      <div class="site-footer__brand">{{ shop.name | default: 'Gharana' }}</div>
+      <div class="site-footer__tag">{{ settings.brand_tagline | default: 'Pure. Traditional. Delivered.' }}</div>
+      <p style="font-size:13px;opacity:0.75;line-height:1.6;max-width:280px;">Fresh flours, cold-pressed oils, hand-cleaned spices — sourced from generations-old farms across India. Unadulterated, always.</p>
+      <div class="site-footer__social">
+        {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener">{%- render 'icon', icon: 'instagram', size: 18 -%}</a>{%- endif -%}
+        {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" aria-label="Facebook" target="_blank" rel="noopener">{%- render 'icon', icon: 'facebook', size: 18 -%}</a>{%- endif -%}
+        {%- if settings.social_youtube != blank -%}<a href="{{ settings.social_youtube }}" aria-label="YouTube" target="_blank" rel="noopener">{%- render 'icon', icon: 'youtube', size: 18 -%}</a>{%- endif -%}
+      </div>
+    </div>
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'link_list' -%}
+        <div {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.heading }}</h4>
+          <ul>
+            {%- for link in block.settings.menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <div class="site-footer__bottom">
+    &copy; {{ 'now' | date: '%Y' }} {{ shop.name }} · {{ 'now' | date: '%B %Y' }} · Made with care in India.
+  </div>
+</footer>
+
+<div id="floating-cart" class="floating-cart" role="complementary" aria-label="Your basket">
+  <a href="{{ routes.cart_url }}" class="floating-cart__inner">
+    <div>
+      <div class="floating-cart__count" data-cart-count>0 items</div>
+      <div class="floating-cart__total" data-cart-total>₹0</div>
+    </div>
+    <div class="floating-cart__cta">View basket {%- render 'icon', icon: 'chevron-right', size: 16 -%}</div>
+  </a>
+</div>
+
+{%- comment -%} Bottom tab bar (mobile only) {%- endcomment -%}
+<nav class="bottom-tabs mobile-only" aria-label="Primary navigation">
+  {%- assign tpl = template.name -%}
+  <a href="{{ routes.root_url }}" class="{% if tpl == 'index' %}is-active{% endif %}">
+    {%- render 'icon', icon: 'home', size: 22 -%}<span>Home</span>
+  </a>
+  <a href="{{ routes.collections_url }}" class="{% if tpl == 'list-collections' or tpl == 'collection' %}is-active{% endif %}">
+    {%- render 'icon', icon: 'grid', size: 22 -%}<span>Categories</span>
+  </a>
+  <a href="{{ routes.cart_url }}" class="{% if tpl == 'cart' %}is-active{% endif %}" style="position:relative;">
+    {%- render 'icon', icon: 'cart', size: 22 -%}<span>Basket</span>
+    <span class="icon-btn__badge" data-cart-badge style="display:none;top:2px;right:calc(50% - 22px);">0</span>
+  </a>
+  <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="{% if tpl contains 'customers' %}is-active{% endif %}">
+    {%- render 'icon', icon: 'user', size: 22 -%}<span>Account</span>
+  </a>
+</nav>
+
+{% schema %}
+{
+  "name": "Footer",
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Link list",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link_list", "settings": { "heading": "Shop" } },
+      { "type": "link_list", "settings": { "heading": "Care" } },
+      { "type": "link_list", "settings": { "heading": "Company" } }
+    ]
+  }
+}
+{% endschema %}

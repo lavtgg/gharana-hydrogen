@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "promo": { "type": "promo-carousel" },
+    "category-grid": {
+      "type": "category-grid",
+      "settings": { "kicker": "SHOP", "heading": "Shop by category", "subtitle": "From atta to spices, sourced with care" }
+    },
+    "offer": {
+      "type": "offer-strip",
+      "settings": {
+        "icon": "percent",
+        "title": "₹100 off on your first pantry order",
+        "subtitle": "Use code FIRSTBOX above ₹499"
+      }
+    },
+    "bestsellers": {
+      "type": "product-rail",
+      "settings": {
+        "kicker": "LOVED BY HOMES",
+        "heading": "Bestsellers near you",
+        "subtitle": "Loved by Gharana homes",
+        "display": "rail",
+        "product_count": 10
+      }
+    },
+    "fresh": {
+      "type": "product-rail",
+      "settings": {
+        "kicker": "MILLED THIS WEEK",
+        "heading": "Fresh pantry picks",
+        "subtitle": "Milled and packed recently",
+        "display": "grid",
+        "product_count": 8
+      }
+    },
+    "trust": { "type": "trust-badges" }
+  },
+  "order": ["promo", "category-grid", "offer", "bestsellers", "fresh", "trust"]
+}

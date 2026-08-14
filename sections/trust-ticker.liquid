@@ -1,0 +1,24 @@
+{%- if section.settings.enabled -%}
+<section class="trust-ticker" aria-label="Our promise">
+  {%- assign items = settings.trust_ticker | split: ',' -%}
+  <div class="trust-ticker__track">
+    {%- for i in (1..2) -%}
+      {%- for item in items -%}
+        <span>{{ item | strip }}</span>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Trust Ticker",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Show ticker", "default": true },
+    { "type": "paragraph", "content": "Configure the items under Theme Settings → Trust & Purity." }
+  ],
+  "presets": [ { "name": "Trust Ticker" } ]
+}
+{% endschema %}

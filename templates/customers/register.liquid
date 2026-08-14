@@ -1,0 +1,35 @@
+<section class="auth-page has-bottom-tabs">
+  <div class="auth-page__card postcard postcard--soft">
+    <div class="h-kicker">JOIN THE FAMILY</div>
+    <h1>Create your account</h1>
+    <p class="sub">Reorder in one tap, track deliveries, save addresses.</p>
+
+    {%- form 'create_customer', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div style="padding:10px 12px;background:#F8E3DC;border:1px solid var(--color-error);color:var(--color-error);border-radius:10px;margin-bottom:14px;font-size:12.5px;">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+      <div class="form-field">
+        <label for="first_name">First name</label>
+        <input type="text" id="first_name" name="customer[first_name]" autocomplete="given-name">
+      </div>
+      <div class="form-field">
+        <label for="last_name">Last name</label>
+        <input type="text" id="last_name" name="customer[last_name]" autocomplete="family-name">
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="customer[email]" autocomplete="email" required>
+      </div>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="customer[password]" autocomplete="new-password" required>
+      </div>
+      <div class="form-actions">
+        <button type="submit">Create account</button>
+      </div>
+      <div class="form-note">Already have one? <a href="{{ routes.account_login_url }}">Sign in</a></div>
+    {%- endform -%}
+  </div>
+</section>

@@ -1,0 +1,111 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign compare = current_variant.compare_at_price
+  assign on_sale = false
+  if compare != blank and compare > current_variant.price
+    assign on_sale = true
+    assign save_pct = compare | minus: current_variant.price | times: 100.0 | divided_by: compare | round
+  endif
+-%}
+<section class="product-page container-block" data-product-page data-product='{{ product | json | escape }}'>
+  <div class="page-width" style="padding:0;">
+    <div class="product-page__grid">
+      <div class="product-gallery">
+        <div class="product-gallery__main postcard postcard--card postcard--soft" data-gallery-main style="padding:0;">
+          {%- if product.featured_image != blank -%}
+            <img src="{{ product.featured_image | image_url: width: 900 }}" alt="{{ product.title | escape }}" width="900" height="900">
+          {%- else -%}
+            <div style="width:100%;aspect-ratio:1;background:var(--color-cream-deep);display:grid;place-items:center;color:var(--color-dust);">Gharana</div>
+          {%- endif -%}
+          <div class="pure-stamp" style="position:absolute;top:18px;right:18px;">{{ settings.pure_stamp_text | default: 'PURE · SHUDDH' }}</div>
+        </div>
+        {%- if product.images.size > 1 -%}
+          <div class="product-gallery__thumbs">
+            {%- for image in product.images -%}
+              <button type="button" data-gallery-thumb data-src="{{ image | image_url: width: 900 }}" class="{% if forloop.first %}is-active{% endif %}">
+                <img src="{{ image | image_url: width: 160 }}" alt="" loading="lazy" width="160" height="160">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="product-info">
+        <div class="product-info__vendor">{{ product.vendor | default: 'GHARANA' | upcase }}</div>
+        <h1 class="product-info__title">{{ product.title }}</h1>
+        <div class="product-info__rating">
+          <span class="stars">★★★★★</span>
+          <span>4.8 · {{ product.metafields.custom.reviews_count | default: 128 }} reviews</span>
+        </div>
+
+        <div class="product-info__price">
+          <span class="now" data-price-now>{{ current_variant.price | money_without_trailing_zeros }}</span>
+          <span class="was" data-price-was style="{% unless on_sale %}display:none;{% endunless %}">{{ compare | money_without_trailing_zeros }}</span>
+          <span class="save" data-price-save style="{% unless on_sale %}display:none;{% endunless %}">Save {{ save_pct }}%</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--color-jade-tint);border-radius:9px;font-size:12.5px;color:var(--color-jade);font-weight:700;width:fit-content;">
+          {%- render 'icon', icon: 'zap', size: 14 -%} Delivered in {{ settings.default_eta_minutes }} minutes
+        </div>
+
+        {%- if product.variants.size > 1 -%}
+          <div class="product-info__variant">
+            <div class="label">Pack size</div>
+            <div class="variant-pills">
+              {%- for variant in product.variants -%}
+                <button type="button" class="variant-pill {% if variant.id == current_variant.id %}is-selected{% endif %}" data-variant-id="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                  {{ variant.title }} · {{ variant.price | money_without_trailing_zeros }}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="product-cta">
+          <button type="button" class="btn-primary" data-buy-cta data-variant-id="{{ current_variant.id }}">Buy now</button>
+          <button type="button" class="btn-secondary" data-product-add data-variant-id="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
+            {% if current_variant.available %}Add to basket{% else %}Sold out{% endif %}
+          </button>
+        </div>
+
+        <div class="product-features">
+          <div class="product-features__item">
+            {%- render 'icon', icon: 'shield', size: 22 -%}<div class="txt">Lab tested</div>
+          </div>
+          <div class="product-features__item">
+            {%- render 'icon', icon: 'award', size: 22 -%}<div class="txt">Stone milled</div>
+          </div>
+          <div class="product-features__item">
+            {%- render 'icon', icon: 'truck', size: 22 -%}<div class="txt">Free above ₹499</div>
+          </div>
+          <div class="product-features__item">
+            {%- render 'icon', icon: 'check-circle', size: 22 -%}<div class="txt">Easy returns</div>
+          </div>
+        </div>
+
+        {%- if product.description != blank -%}
+          <div class="product-story postcard postcard--soft">
+            <div class="h-kicker" style="margin-bottom:6px;">THE STORY</div>
+            <h3>Why home-loving families choose this</h3>
+            <div class="rte" style="font-size:13.5px;color:var(--color-espresso);line-height:1.65;">{{ product.description }}</div>
+          </div>
+        {%- endif -%}
+
+        {%- if product.metafields.custom.ingredients != blank -%}
+          <div class="product-story postcard postcard--soft" style="margin-top:12px;">
+            <div class="h-kicker" style="margin-bottom:6px;">INGREDIENTS</div>
+            <p>{{ product.metafields.custom.ingredients }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

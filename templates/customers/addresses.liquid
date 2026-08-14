@@ -1,0 +1,48 @@
+<section class="container-block has-bottom-tabs" style="padding:20px 0;">
+  <div class="page-width" style="padding:0 16px;">
+    <div class="h-kicker">ACCOUNT</div>
+    <h1 style="font-family:var(--font-heading);font-size:26px;font-weight:700;margin:4px 0 14px;">Saved addresses</h1>
+
+    {%- paginate customer.addresses by 6 -%}
+      <div style="display:grid;grid-template-columns:1fr;gap:12px;">
+        <div class="postcard postcard--soft" style="padding:16px;">
+          <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:600;margin-bottom:10px;">Add a new address</h2>
+          {%- form 'customer_address', customer.new_address -%}
+            <div class="form-field"><label for="AddressFirstNameNew">First name</label><input type="text" id="AddressFirstNameNew" name="address[first_name]"></div>
+            <div class="form-field"><label for="AddressLastNameNew">Last name</label><input type="text" id="AddressLastNameNew" name="address[last_name]"></div>
+            <div class="form-field"><label for="AddressAddress1New">Address</label><input type="text" id="AddressAddress1New" name="address[address1]"></div>
+            <div class="form-field"><label for="AddressAddress2New">Apt / Suite</label><input type="text" id="AddressAddress2New" name="address[address2]"></div>
+            <div class="form-field"><label for="AddressCityNew">City</label><input type="text" id="AddressCityNew" name="address[city]"></div>
+            <div class="form-field"><label for="AddressZipNew">Pincode</label><input type="text" id="AddressZipNew" name="address[zip]" autocapitalize="characters"></div>
+            <div class="form-field"><label for="AddressPhoneNew">Phone</label><input type="tel" id="AddressPhoneNew" name="address[phone]"></div>
+            <div class="form-actions"><button type="submit">Save address</button></div>
+          {%- endform -%}
+        </div>
+
+        {%- for address in customer.addresses -%}
+          <div class="postcard postcard--soft" style="padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="font-size:13.5px;line-height:1.7;">
+                <div style="font-weight:700;">{{ address.first_name }} {{ address.last_name }}{% if address == customer.default_address %} <span class="order-line__status order-line__status--paid" style="margin-left:6px;">Default</span>{% endif %}</div>
+                {{ address.address1 }}{% if address.address2 != blank %}, {{ address.address2 }}{% endif %}<br>
+                {{ address.city }}, {{ address.province }} {{ address.zip }}<br>
+                {{ address.country }}<br>
+                {% if address.phone != blank %}☎ {{ address.phone }}{% endif %}
+              </div>
+              <div>
+                {%- form 'customer_address', address -%}
+                  <input type="hidden" name="_method" value="delete">
+                  <button type="submit" style="color:var(--color-error);font-size:12px;font-weight:700;">Delete</button>
+                {%- endform -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endpaginate -%}
+
+    <div style="margin-top:16px;">
+      <a href="{{ routes.account_url }}" style="color:var(--color-saffron-dark);font-weight:700;">← Back to account</a>
+    </div>
+  </div>
+</section>

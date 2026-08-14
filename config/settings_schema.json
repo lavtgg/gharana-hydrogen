@@ -1,0 +1,127 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Gharana Heritage",
+    "theme_version": "1.0.0",
+    "theme_author": "Gharana",
+    "theme_documentation_url": "https://gharana.co",
+    "theme_support_url": "https://gharana.co/support"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 60,
+        "max": 220,
+        "step": 10,
+        "unit": "px",
+        "label": "Logo width",
+        "default": 130
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "text",
+        "id": "brand_tagline",
+        "label": "Brand tagline",
+        "default": "Pure. Traditional. Delivered."
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "header", "content": "Heritage palette" },
+      { "type": "color", "id": "color_cream", "label": "Cream (page bg)", "default": "#F7F2E7" },
+      { "type": "color", "id": "color_cream_deep", "label": "Deep cream", "default": "#EFE7D2" },
+      { "type": "color", "id": "color_paper", "label": "Postcard paper", "default": "#FBF6EA" },
+      { "type": "color", "id": "color_earth", "label": "Ink / earth", "default": "#1B1410" },
+      { "type": "color", "id": "color_saffron", "label": "Saffron (CTA)", "default": "#E95F16" },
+      { "type": "color", "id": "color_saffron_dark", "label": "Saffron dark", "default": "#B34309" },
+      { "type": "color", "id": "color_jade", "label": "Jade (fresh / delivery)", "default": "#146B3E" }
+    ]
+  },
+  {
+    "name": "Q-Commerce",
+    "settings": [
+      { "type": "header", "content": "Delivery experience" },
+      {
+        "type": "range",
+        "id": "default_eta_minutes",
+        "min": 8,
+        "max": 90,
+        "step": 2,
+        "unit": "min",
+        "label": "Default delivery ETA",
+        "default": 28
+      },
+      {
+        "type": "text",
+        "id": "default_location_label",
+        "label": "Default location label",
+        "default": "Bengaluru 560001"
+      },
+      {
+        "type": "text",
+        "id": "location_prefix",
+        "label": "Location prefix",
+        "default": "Home"
+      },
+      {
+        "type": "text",
+        "id": "delivery_kicker",
+        "label": "ETA kicker text",
+        "default": "DELIVERY IN"
+      },
+      {
+        "type": "text",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping copy",
+        "default": "Free delivery above ₹499"
+      }
+    ]
+  },
+  {
+    "name": "Trust & Purity",
+    "settings": [
+      {
+        "type": "text",
+        "id": "trust_ticker",
+        "label": "Trust ticker (comma-separated)",
+        "default": "Lab Tested,Cold Pressed,No Preservatives,Small Batch,Traditional Methods"
+      },
+      {
+        "type": "text",
+        "id": "pure_stamp_text",
+        "label": "Purity stamp text",
+        "default": "PURE · SHUDDH · शुद्ध"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      { "type": "header", "content": "Fonts (Google Fonts)" },
+      { "type": "paragraph", "content": "Fraunces (heritage serif) is used for headings. Plus Jakarta Sans for body. Yatra One for Devanagari touches." }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+      { "type": "text", "id": "social_youtube", "label": "YouTube URL" },
+      { "type": "text", "id": "social_whatsapp", "label": "WhatsApp number (with country code)" }
+    ]
+  }
+]

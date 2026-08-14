@@ -1,0 +1,14 @@
+{
+  "type": "header",
+  "sections": {
+    "announcement": {
+      "type": "trust-ticker",
+      "settings": { "enabled": true }
+    },
+    "header": {
+      "type": "header",
+      "settings": {}
+    }
+  },
+  "order": ["announcement", "header"]
+}

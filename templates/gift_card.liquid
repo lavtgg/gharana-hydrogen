@@ -1,0 +1,25 @@
+{% layout none %}
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift card · {{ shop.name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+</head>
+<body style="padding:40px 20px;">
+  <div class="page-width">
+    <div class="postcard postcard--soft" style="padding:32px;text-align:center;max-width:520px;margin:0 auto;">
+      <div class="h-kicker">GIFT CARD</div>
+      <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:8px 0;">{{ gift_card.initial_value | money }}</h1>
+      <p style="color:var(--color-dust);font-size:13px;margin-bottom:14px;">from {{ shop.name }}</p>
+      <div style="padding:20px;border:2px dashed var(--color-saffron);border-radius:12px;background:var(--color-saffron-tint);">
+        <div style="font-family:monospace;font-size:20px;font-weight:700;letter-spacing:0.06em;color:var(--color-saffron-dark);">{{ gift_card.code | format_code }}</div>
+      </div>
+      <p style="margin-top:14px;font-size:12.5px;color:var(--color-dust);">Balance: {{ gift_card.balance | money }}</p>
+      <a href="{{ shop.url }}" style="display:inline-block;margin-top:18px;padding:12px 24px;background:var(--color-saffron);color:#fff;border-radius:10px;font-weight:800;">Shop {{ shop.name }}</a>
+    </div>
+  </div>
+</body>
+</html>

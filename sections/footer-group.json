@@ -1,0 +1,15 @@
+{
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": { "type": "link_list", "settings": { "heading": "Shop" } },
+        "care": { "type": "link_list", "settings": { "heading": "Care" } },
+        "company": { "type": "link_list", "settings": { "heading": "Company" } }
+      },
+      "block_order": ["shop", "care", "company"]
+    }
+  },
+  "order": ["footer"]
+}

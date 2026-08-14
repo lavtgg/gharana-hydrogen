@@ -1,0 +1,75 @@
+{%- comment -%}
+  Product card — Blinkit-style with heritage postcard frame.
+  Params: product (required), rail (optional bool), test_prefix (string)
+{%- endcomment -%}
+{%- liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign compare_price = selected_variant.compare_at_price
+  assign on_sale = false
+  if compare_price != blank and compare_price > selected_variant.price
+    assign on_sale = true
+    assign save_pct = compare_price | minus: selected_variant.price | times: 100.0 | divided_by: compare_price | round
+  endif
+  assign tags_lc = product.tags | join: ',' | downcase
+  assign is_pure = false
+  if tags_lc contains 'pure' or tags_lc contains 'organic' or tags_lc contains 'certified' or tags_lc contains 'lab-tested'
+    assign is_pure = true
+  endif
+-%}
+<article class="product-card postcard postcard--card postcard--soft" data-product-card data-product-actions data-product-handle="{{ product.handle }}">
+  <a href="{{ product.url }}" class="product-card__link">
+    <div class="product-card__media">
+      {%- if on_sale -%}
+        <div class="product-card__discount">{{ save_pct }}% OFF</div>
+      {%- endif -%}
+      {%- if is_pure -%}
+        <div class="product-card__quality">
+          {%- render 'icon', icon: 'check-circle', size: 10 -%}
+          PURE
+        </div>
+      {%- endif -%}
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape | default: product.title }}" loading="lazy" width="400" height="400">
+      {%- else -%}
+        <div style="width:100%;height:100%;background:var(--color-cream-deep);display:grid;place-items:center;color:var(--color-dust);font-size:11px;">Gharana</div>
+      {%- endif -%}
+    </div>
+
+    <div class="product-card__eta">
+      {%- render 'icon', icon: 'clock', size: 10 -%}
+      <span>10 MINS</span>
+      <span class="dot"></span>
+      <span style="color:var(--color-gold);">{%- render 'icon', icon: 'star', size: 9 -%}</span>
+      <span class="product-card__rating">4.8</span>
+    </div>
+
+    <div class="product-card__name">{{ product.title | escape }}</div>
+
+    <div class="product-card__variant">
+      <span>{% if selected_variant.title == 'Default Title' %}Pack{% else %}{{ selected_variant.title }}{% endif %}</span>
+      {%- if product.variants.size > 1 -%}
+        {%- render 'icon', icon: 'chevron-down', size: 12 -%}
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="product-card__foot">
+    <div class="product-card__price">
+      <span class="now">{{ selected_variant.price | money_without_trailing_zeros }}</span>
+      {%- if on_sale -%}
+        <span class="was">{{ compare_price | money_without_trailing_zeros }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if selected_variant.available -%}
+      <button type="button" class="add-btn" data-add-to-cart data-variant-id="{{ selected_variant.id }}" aria-label="Add {{ product.title | escape }} to basket">ADD</button>
+      <div class="stepper" data-stepper data-variant-id="{{ selected_variant.id }}" style="display:none;">
+        <button type="button" data-dec aria-label="Decrease quantity">{%- render 'icon', icon: 'minus', size: 14 -%}</button>
+        <span class="qty" data-qty>1</span>
+        <button type="button" data-inc aria-label="Increase quantity">{%- render 'icon', icon: 'plus', size: 14 -%}</button>
+      </div>
+    {%- else -%}
+      <button type="button" class="add-btn" disabled>SOLD OUT</button>
+    {%- endif -%}
+  </div>
+</article>

@@ -1,0 +1,62 @@
+<section class="container-block has-bottom-tabs" style="padding-top:20px;">
+  <div class="page-width" style="padding:0 16px;">
+    <div class="h-kicker">ORDER {{ order.name }}</div>
+    <h1 style="font-family:var(--font-heading);font-size:26px;font-weight:700;margin:4px 0 14px;">Order details</h1>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:12px;">
+      <div class="postcard postcard--soft" style="padding:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div class="h-kicker">PLACED</div>
+            <div style="font-family:var(--font-heading);font-size:16px;font-weight:600;margin-top:2px;">{{ order.created_at | date: '%d %b %Y, %I:%M %p' }}</div>
+          </div>
+          <div class="order-line__status order-line__status--{% if order.financial_status == 'paid' %}paid{% else %}pending{% endif %}">
+            {{ order.financial_status | capitalize }} · {{ order.fulfillment_status | default: 'Unfulfilled' | capitalize }}
+          </div>
+        </div>
+      </div>
+
+      <div class="postcard postcard--soft" style="padding:16px;">
+        <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:600;margin-bottom:10px;">Items</h2>
+        {%- for item in order.line_items -%}
+          <div class="cart-line" style="filter:none;background:transparent;border-top:1px dashed var(--color-hairline);padding-top:12px;margin-bottom:0;padding-bottom:12px;">
+            <div class="cart-line__img">
+              {%- if item.image != blank -%}<img src="{{ item.image | image_url: width: 200 }}" alt="" width="200" height="200">{%- endif -%}
+            </div>
+            <div>
+              <div class="cart-line__name">{{ item.product.title }}</div>
+              <div class="cart-line__meta">{% if item.variant.title != 'Default Title' %}{{ item.variant.title }} · {% endif %}Qty {{ item.quantity }}</div>
+            </div>
+            <div class="cart-line__price">{{ item.final_line_price | money_without_trailing_zeros }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="postcard postcard--soft" style="padding:16px;">
+        <div class="cart-summary__row"><span>Subtotal</span><span>{{ order.subtotal_price | money_without_trailing_zeros }}</span></div>
+        <div class="cart-summary__row"><span>Shipping</span><span>{{ order.shipping_price | money_without_trailing_zeros }}</span></div>
+        {%- if order.tax_price > 0 -%}
+          <div class="cart-summary__row"><span>Tax</span><span>{{ order.tax_price | money_without_trailing_zeros }}</span></div>
+        {%- endif -%}
+        <div class="cart-summary__row cart-summary__row--total"><span>Total</span><span>{{ order.total_price | money_without_trailing_zeros }}</span></div>
+      </div>
+
+      {%- if order.shipping_address -%}
+        <div class="postcard postcard--soft" style="padding:16px;">
+          <h2 style="font-family:var(--font-heading);font-size:16px;font-weight:600;margin-bottom:10px;">Delivering to</h2>
+          <div style="font-size:13.5px;line-height:1.7;">
+            {{ order.shipping_address.name }}<br>
+            {{ order.shipping_address.address1 }}{% if order.shipping_address.address2 != blank %}, {{ order.shipping_address.address2 }}{% endif %}<br>
+            {{ order.shipping_address.city }}, {{ order.shipping_address.province }} {{ order.shipping_address.zip }}<br>
+            {{ order.shipping_address.country }}<br>
+            {% if order.shipping_address.phone != blank %}☎ {{ order.shipping_address.phone }}{% endif %}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div style="margin-top:16px;">
+      <a href="{{ routes.account_url }}" style="color:var(--color-saffron-dark);font-weight:700;">← Back to account</a>
+    </div>
+  </div>
+</section>

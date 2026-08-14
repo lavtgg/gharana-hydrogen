@@ -1,0 +1,94 @@
+<header class="site-header" role="banner">
+  {%- comment -%} Mobile Blinkit-style header {%- endcomment -%}
+  <div class="header-mobile">
+    <div class="mobile-topbar">
+      <div class="mobile-topbar__row">
+        <div class="mobile-topbar__delivery">
+          <div class="mobile-topbar__kicker">
+            <span class="pulse-dot"></span>
+            <span>{{ settings.delivery_kicker | default: 'DELIVERY IN' }}</span>
+          </div>
+          <div class="mobile-topbar__eta">{{ settings.default_eta_minutes | default: 28 }} minutes</div>
+          <button type="button" class="mobile-topbar__location" data-location-btn>
+            {%- render 'icon', icon: 'home', size: 12 -%}
+            <span class="loc-text">{{ settings.location_prefix | default: 'Home' }} · {{ settings.default_location_label | default: 'Bengaluru 560001' }}</span>
+            {%- render 'icon', icon: 'chevron-down', size: 14 -%}
+          </button>
+        </div>
+        {%- if customer -%}
+          <a href="{{ routes.account_url }}" class="mobile-topbar__avatar" aria-label="Account">
+            {{ customer.first_name | default: customer.email | slice: 0, 1 | upcase }}
+          </a>
+        {%- else -%}
+          <a href="{{ routes.account_login_url }}" class="mobile-topbar__avatar mobile-topbar__avatar--login" aria-label="Sign in">
+            {%- render 'icon', icon: 'user', size: 18 -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="mobile-searchbar">
+      {%- render 'icon', icon: 'search', size: 19 -%}
+      <input type="search" name="q" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
+      <span class="divider"></span>
+      <button type="button" aria-label="Voice search" style="color:var(--color-saffron);">{%- render 'icon', icon: 'mic', size: 18 -%}</button>
+    </form>
+  </div>
+
+  {%- comment -%} Desktop header {%- endcomment -%}
+  <div class="header-desktop">
+    <div class="header-desktop__row">
+      <a href="{{ routes.root_url }}" class="brand-logo">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: 320 }}" alt="{{ shop.name }}" width="{{ settings.logo_width | default: 130 }}" height="60">
+        {%- else -%}
+          <span class="brand-logo__mark">घ</span>
+          <span class="brand-logo__text">Gharana</span>
+        {%- endif -%}
+      </a>
+
+      <nav class="header-desktop__nav" role="navigation">
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+        <a href="{{ routes.collections_url }}">All Categories</a>
+      </nav>
+
+      <div class="header-desktop__actions">
+        <button type="button" class="header-desktop__location" data-location-btn aria-label="Change location">
+          <div>
+            <div class="kicker">{{ settings.delivery_kicker }}</div>
+            <div class="eta">{{ settings.default_eta_minutes }} MIN <span style="color:var(--color-dust);font-weight:500;">· <span class="loc-text">{{ settings.default_location_label }}</span></span></div>
+          </div>
+          {%- render 'icon', icon: 'chevron-down', size: 14 -%}
+        </button>
+        <form action="{{ routes.search_url }}" method="get" style="position:relative;">
+          <button type="submit" class="icon-btn" aria-label="Search">{%- render 'icon', icon: 'search', size: 20 -%}</button>
+        </form>
+        {%- if customer -%}
+          <a href="{{ routes.account_url }}" class="icon-btn" aria-label="Account">{%- render 'icon', icon: 'user', size: 20 -%}</a>
+        {%- else -%}
+          <a href="{{ routes.account_login_url }}" class="icon-btn" aria-label="Sign in">{%- render 'icon', icon: 'user', size: 20 -%}</a>
+        {%- endif -%}
+        <a href="{{ routes.cart_url }}" class="icon-btn" aria-label="Cart">
+          {%- render 'icon', icon: 'cart', size: 20 -%}
+          <span class="icon-btn__badge" data-cart-badge style="display:none;">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

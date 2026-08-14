@@ -1,0 +1,31 @@
+<section class="section container-block">
+  <div class="postcard postcard--soft" style="padding:20px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;">
+    <div style="width:44px;height:44px;border-radius:12px;background:var(--color-saffron-tint);display:grid;place-items:center;color:var(--color-saffron-dark);">
+      {%- render 'icon', icon: section.settings.icon | default: 'percent', size: 22 -%}
+    </div>
+    <div>
+      <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;color:var(--color-earth);">{{ section.settings.title }}</div>
+      <div style="font-size:12px;color:var(--color-dust);margin-top:3px;">{{ section.settings.subtitle }}</div>
+    </div>
+    {%- if section.settings.link != blank -%}
+      <a href="{{ section.settings.link }}" style="color:var(--color-saffron);">{%- render 'icon', icon: 'chevron-right', size: 22 -%}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Offer Strip",
+  "tag": "section",
+  "settings": [
+    { "type": "select", "id": "icon", "label": "Icon", "options": [
+      { "value": "percent", "label": "Discount" }, { "value": "truck", "label": "Delivery" },
+      { "value": "award", "label": "Quality" }, { "value": "repeat", "label": "Subscription" }
+    ], "default": "percent" },
+    { "type": "text", "id": "title", "label": "Title", "default": "₹100 off on your first pantry order" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Use code FIRSTBOX above ₹499" },
+    { "type": "url", "id": "link", "label": "Link" }
+  ],
+  "presets": [ { "name": "Offer Strip" } ]
+}
+{% endschema %}

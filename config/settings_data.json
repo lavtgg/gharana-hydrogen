@@ -1,0 +1,23 @@
+{
+  "current": {
+    "logo_width": 130,
+    "brand_tagline": "Pure. Traditional. Delivered.",
+    "color_cream": "#F7F2E7",
+    "color_cream_deep": "#EFE7D2",
+    "color_paper": "#FBF6EA",
+    "color_earth": "#1B1410",
+    "color_saffron": "#E95F16",
+    "color_saffron_dark": "#B34309",
+    "color_jade": "#146B3E",
+    "default_eta_minutes": 28,
+    "default_location_label": "Bengaluru 560001",
+    "location_prefix": "Home",
+    "delivery_kicker": "DELIVERY IN",
+    "free_shipping_threshold": "Free delivery above ₹499",
+    "trust_ticker": "Lab Tested,Cold Pressed,No Preservatives,Small Batch,Traditional Methods",
+    "pure_stamp_text": "PURE · SHUDDH · शुद्ध"
+  },
+  "presets": {
+    "Default": {}
+  }
+}

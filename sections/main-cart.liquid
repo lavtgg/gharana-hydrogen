@@ -1,0 +1,87 @@
+<section class="cart-page has-bottom-tabs">
+  <h1>Your Basket</h1>
+
+  {%- if cart.item_count > 0 -%}
+    <form action="{{ routes.cart_url }}" method="post" novalidate>
+      <div class="cart-page__grid">
+        <div data-cart-lines>
+          {%- for item in cart.items -%}
+            <div class="cart-line postcard postcard--card postcard--soft">
+              <a href="{{ item.url }}" class="cart-line__img">
+              {%- if item.image != blank -%}
+                <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title | escape }}" width="200" height="200">
+              {%- endif -%}
+              </a>
+              <div>
+                <a href="{{ item.url }}" class="cart-line__name">{{ item.product.title }}</a>
+                <div class="cart-line__meta">{% if item.variant.title != 'Default Title' %}{{ item.variant.title }} · {% endif %}{{ item.final_price | money_without_trailing_zeros }} each</div>
+                <div class="cart-line__foot">
+                  <div class="stepper" style="width:120px;">
+                    <button type="button" data-cart-line-key="{{ item.key }}" data-action="dec" aria-label="Decrease">{%- render 'icon', icon: 'minus', size: 14 -%}</button>
+                    <span class="qty">{{ item.quantity }}</span>
+                    <button type="button" data-cart-line-key="{{ item.key }}" data-action="inc" aria-label="Increase">{%- render 'icon', icon: 'plus', size: 14 -%}</button>
+                  </div>
+                  <button type="button" class="cart-line__remove" data-cart-line-key="{{ item.key }}" data-action="remove">Remove</button>
+                </div>
+              </div>
+              <div class="cart-line__price">{{ item.final_line_price | money_without_trailing_zeros }}</div>
+            </div>
+          {%- endfor -%}
+
+          <div class="postcard postcard--soft" style="padding:14px;margin-top:8px;">
+            <label style="font-size:11.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-dust);" for="cart-note">Order note</label>
+            <textarea id="cart-note" name="note" rows="3" placeholder="Delivery instructions, gift note, etc." style="width:100%;margin-top:6px;padding:10px 12px;border:1px solid var(--color-hairline);border-radius:10px;background:var(--color-paper);font-size:13px;resize:vertical;">{{ cart.note }}</textarea>
+          </div>
+        </div>
+
+        <aside>
+          <div class="cart-summary postcard postcard--soft">
+            <h3 style="font-family:var(--font-heading);font-size:18px;margin-bottom:10px;">Order summary</h3>
+            <div class="cart-summary__row">
+              <span>Subtotal</span>
+              <span>{{ cart.total_price | money_without_trailing_zeros }}</span>
+            </div>
+            {%- if cart.total_discount > 0 -%}
+              <div class="cart-summary__row" style="color:var(--color-jade);">
+                <span>Discount</span>
+                <span>-{{ cart.total_discount | money_without_trailing_zeros }}</span>
+              </div>
+            {%- endif -%}
+            <div class="cart-summary__row">
+              <span>Delivery</span>
+              <span style="color:var(--color-jade);font-weight:700;">{{ settings.free_shipping_threshold | default: 'Free above ₹499' }}</span>
+            </div>
+            <div class="cart-summary__row cart-summary__row--total">
+              <span>Total</span>
+              <span>{{ cart.total_price | money_without_trailing_zeros }}</span>
+            </div>
+            <div class="cart-summary__note">Shipping & taxes calculated at checkout</div>
+            <button type="submit" name="checkout" class="cart-summary__checkout">
+              Proceed to checkout →
+            </button>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:11.5px;color:var(--color-dust);">
+              {%- render 'icon', icon: 'shield', size: 14 -%} Secure Shopify checkout
+            </div>
+          </div>
+        </aside>
+      </div>
+    </form>
+  {%- else -%}
+    <div class="cart-empty container-block">
+      <div class="postcard postcard--soft" style="padding:40px 20px;max-width:480px;margin:0 auto;">
+        <div class="pure-stamp" style="margin:0 auto 16px;">EMPTY {{ 'now' | date: '%Y' }}</div>
+        <h2>Your basket is empty</h2>
+        <p>Fill it with fresh atta, cold-pressed oils and hand-cleaned spices.</p>
+        <a href="{{ routes.collections_url }}" class="cart-summary__checkout" style="display:inline-block;">Start shopping</a>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

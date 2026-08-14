@@ -1,0 +1,124 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_text": "Skip to content",
+      "close": "Close",
+      "menu": "Menu",
+      "cart": "Cart",
+      "search": "Search"
+    },
+    "search": {
+      "placeholder": "Search for atta, dal, ghee...",
+      "submit": "Search",
+      "no_results": "No results for {{ terms }}"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ page }}"
+    },
+    "password_page": {
+      "title": "Coming soon",
+      "login_form_heading": "Enter store using password"
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you were looking for does not exist."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "ADD",
+      "added": "ADDED",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "select_variant": "Select option",
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "vendor": "Vendor",
+      "description": "Description",
+      "share": "Share",
+      "view_details": "View details"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Basket",
+      "empty": "Your basket is empty",
+      "continue_shopping": "Continue shopping",
+      "checkout": "Proceed to checkout",
+      "subtotal": "Subtotal",
+      "taxes_and_shipping_at_checkout": "Shipping & taxes calculated at checkout",
+      "remove": "Remove",
+      "note": "Order note",
+      "update": "Update"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No products match your filters",
+      "products_with_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      }
+    },
+    "sorting": {
+      "title": "Sort by",
+      "manual": "Featured",
+      "best_selling": "Best selling",
+      "price_ascending": "Price: Low to high",
+      "price_descending": "Price: High to low",
+      "created_ascending": "Oldest",
+      "created_descending": "Newest"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My account",
+      "details": "Account details",
+      "view_addresses": "View addresses",
+      "logout": "Log out",
+      "orders": "Orders",
+      "empty": "You haven't placed any orders yet."
+    },
+    "login": {
+      "title": "Welcome to Gharana",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "sign_in": "Sign in",
+      "guest_title": "Continue as guest",
+      "guest_continue": "Continue"
+    },
+    "register": {
+      "title": "Create an account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create"
+    },
+    "orders": {
+      "title": "Order history",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment",
+      "fulfillment_status": "Fulfillment",
+      "total": "Total"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "add_new": "Add new address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "default": "Default"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "email": "Email",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    }
+  }
+}

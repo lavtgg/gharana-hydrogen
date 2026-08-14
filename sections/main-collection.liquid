@@ -1,0 +1,71 @@
+<section class="container-block" style="padding:0;">
+  <div class="collection-layout">
+    {%- if section.settings.show_rail -%}
+      <aside class="collection-rail" aria-label="Categories">
+        {%- for c in collections limit: 30 -%}
+          {%- unless c.handle == 'frontpage' -%}
+            <a href="{{ c.url }}" class="collection-rail__item {% if c.handle == collection.handle %}is-active{% endif %}">
+              <div class="collection-rail__img">
+                {%- if c.image != blank -%}
+                  <img src="{{ c.image | image_url: width: 120 }}" alt="" loading="lazy" width="120" height="120">
+                {%- elsif c.products.first.featured_image != blank -%}
+                  <img src="{{ c.products.first.featured_image | image_url: width: 120 }}" alt="" loading="lazy" width="120" height="120">
+                {%- endif -%}
+              </div>
+              <div class="collection-rail__name">{{ c.title }}</div>
+            </a>
+          {%- endunless -%}
+        {%- endfor -%}
+      </aside>
+    {%- endif -%}
+
+    <div class="collection-catalog">
+      <div class="collection-catalog__head">
+        <div>
+          <div class="h-kicker">GHARANA PANTRY</div>
+          <div class="collection-catalog__title">{{ collection.title }}</div>
+          <div class="collection-catalog__count">{{ collection.products_count }} products</div>
+        </div>
+        <div class="fast-badge">{%- render 'icon', icon: 'zap', size: 11 -%} {{ settings.default_eta_minutes }} min</div>
+      </div>
+
+      {%- if collection.description != blank -%}
+        <div class="postcard postcard--soft" style="padding:12px 14px;margin:6px 0 14px;font-size:12.5px;line-height:1.55;color:var(--color-espresso);">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+
+      {%- paginate collection.products by 24 -%}
+        <div class="product-grid" style="padding:0;">
+          {%- for product in collection.products -%}
+            {%- render 'product-card', product: product -%}
+          {%- else -%}
+            <div style="grid-column:1/-1;padding:40px 20px;text-align:center;color:var(--color-dust);">No products in this collection yet.</div>
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <div style="display:flex;justify-content:center;gap:8px;margin-top:24px;padding:16px;">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="add-btn" style="width:auto;padding:0 16px;">← Prev</a>
+            {%- endif -%}
+            <span style="padding:10px 14px;color:var(--color-dust);font-size:12.5px;">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="add-btn" style="width:auto;padding:0 16px;">Next →</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_rail", "label": "Show category rail (Blinkit-style)", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": { "type": "main-product" },
+    "related": {
+      "type": "product-rail",
+      "settings": {
+        "kicker": "YOU MAY ALSO LOVE",
+        "heading": "Pairs beautifully with",
+        "display": "rail",
+        "product_count": 10
+      }
+    }
+  },
+  "order": ["main", "related"]
+}

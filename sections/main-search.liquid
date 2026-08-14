@@ -1,0 +1,39 @@
+<section class="container-block has-bottom-tabs" style="padding-top:20px;">
+  <div class="page-width" style="padding:0 16px;">
+    <div class="h-kicker">SEARCH</div>
+    <h1 style="font-family:var(--font-heading);font-size:26px;font-weight:700;margin:4px 0 14px;">
+      {%- if search.performed -%}Results for “{{ search.terms }}”{%- else -%}What are you looking for?{%- endif -%}
+    </h1>
+
+    <form action="{{ routes.search_url }}" method="get" class="mobile-searchbar" style="margin:0 0 20px;">
+      {%- render 'icon', icon: 'search', size: 19 -%}
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results.size > 0 -%}
+        <div class="collection-catalog__count" style="margin-bottom:10px;">{{ search.results.size }} results</div>
+        <div class="product-grid" style="padding:0;">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- render 'product-card', product: item -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="postcard postcard--soft" style="padding:30px 20px;text-align:center;">
+          <p style="color:var(--color-dust);">No results for “{{ search.terms }}”</p>
+          <a href="{{ routes.collections_url }}" style="display:inline-block;margin-top:12px;color:var(--color-saffron-dark);font-weight:700;">Browse categories</a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}
