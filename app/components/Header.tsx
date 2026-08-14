@@ -26,8 +26,12 @@ export function Header({
   const {shop, menu} = header;
   return (
     <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+      <NavLink className="brand" prefetch="intent" to="/" end>
+        <span className="brand-mark">G</span>
+        <span>
+          <strong>GHARANA</strong>
+          <small>PURE PANTRY</small>
+        </span>
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -121,19 +125,16 @@ function HeaderMenuMobileToggle() {
     <button
       className="header-menu-mobile-toggle reset"
       onClick={() => open('mobile')}
+      aria-label="Open menu"
     >
-      <h3>☰</h3>
+      <span className="icon-button">☰</span>
     </button>
   );
 }
 
 function SearchToggle() {
   const {open} = useAside();
-  return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
-    </button>
-  );
+  return <button className="header-icon reset" onClick={() => open('search')} aria-label="Search">⌕</button>;
 }
 
 function CartBadge({count}: {count: number}) {
@@ -154,7 +155,9 @@ function CartBadge({count}: {count: number}) {
         } as CartViewPayload);
       }}
     >
-      Cart <span aria-label={`(items: ${count})`}>{count}</span>
+      <span className="header-cart-icon">⌑</span>
+      <span className="cart-label">Cart</span>
+      <span className="cart-count" aria-label={`(items: ${count})`}>{count}</span>
     </a>
   );
 }
@@ -224,8 +227,5 @@ function activeLinkStyle({
   isActive: boolean;
   isPending: boolean;
 }) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-  };
+  return {fontWeight: isActive ? 'bold' : undefined, color: isPending ? 'grey' : undefined};
 }

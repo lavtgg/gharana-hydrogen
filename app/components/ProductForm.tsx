@@ -25,7 +25,7 @@ export function ProductForm({
 
         return (
           <div className="product-options" key={option.name}>
-            <h5>{option.name}</h5>
+            <h5 className="product-option-title">Choose {option.name}</h5>
             <div className="product-options-grid">
               {option.optionValues.map((value) => {
                 const {
@@ -53,9 +53,7 @@ export function ProductForm({
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
                       style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                        border: selected ? '2px solid #e95f16' : '1px solid #e8e8ea',
                         opacity: available ? 1 : 0.3,
                       }}
                     >
@@ -76,9 +74,7 @@ export function ProductForm({
                       }`}
                       key={option.name + name}
                       style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                        border: selected ? '2px solid #e95f16' : '1px solid #e8e8ea',
                         opacity: available ? 1 : 0.3,
                       }}
                       disabled={!exists}

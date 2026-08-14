@@ -10,52 +10,36 @@ import {ProductItem} from '~/components/ProductItem';
 import {MockShopNotice} from '~/components/MockShopNotice';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'Gharana | Pure pantry, delivered'}];
 };
 
 export async function loader(args: Route.LoaderArgs) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
   return {...deferredData, ...criticalData};
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
 async function loadCriticalData({context}: Route.LoaderArgs) {
   const [{collections}] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   return {
     isShopLinked: Boolean(context.env.PUBLIC_STORE_DOMAIN),
+    collections: collections.nodes,
     featuredCollection: collections.nodes[0],
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
 function loadDeferredData({context}: Route.LoaderArgs) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error: Error) => {
-      // Log query errors, but don't throw them so the page can still render
       console.error(error);
       return null;
     });
 
-  return {
-    recommendedProducts,
-  };
+  return {recommendedProducts};
 }
 
 export default function Homepage() {
@@ -63,35 +47,150 @@ export default function Homepage() {
   return (
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
-      <FeaturedCollection collection={data.featuredCollection} />
+      <HomeDeliveryStrip />
+      <PromoRail />
+      <CategorySection collections={data.collections} />
+      <OfferStrip />
       <RecommendedProducts products={data.recommendedProducts} />
+      <Benefits />
     </div>
   );
 }
 
-function FeaturedCollection({
-  collection,
-}: {
-  collection: FeaturedCollectionFragment;
-}) {
-  if (!collection) return null;
-  const image = collection?.image;
+function HomeDeliveryStrip() {
   return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image
-            data={image}
-            sizes="100vw"
-            alt={image.altText || collection.title}
-          />
+    <section className="home-delivery-strip">
+      <div className="delivery-copy">
+        <span className="delivery-label">DELIVERY IN</span>
+        <strong>28 minutes</strong>
+        <button type="button" className="location-button">
+          Home · Bengaluru 560001
+        </button>
+      </div>
+      <Link className="home-search-bar" to="/search">
+        Search for atta, dal, ghee…
+      </Link>
+    </section>
+  );
+}
+
+function PromoRail() {
+  return (
+    <section className="promo-rail">
+      <Link className="expo-promo promo-orange" to="/collections">
+        <div>
+          <span>GHARANA QUALITY</span>
+          <strong>
+            Pure pantry,
+            <br />
+            delivered fast.
+          </strong>
+          <b>SHOP NOW</b>
         </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
+        <i>✦</i>
+      </Link>
+      <Link className="expo-promo promo-green" to="/collections">
+        <div>
+          <span>NEVER RUN OUT</span>
+          <strong>
+            Weekly staples,
+            <br />
+            sorted.
+          </strong>
+          <b>SET A PLAN</b>
+        </div>
+        <i>↻</i>
+      </Link>
+    </section>
+  );
+}
+
+function CategorySection({
+  collections,
+}: {
+  collections: FeaturedCollectionFragment[];
+}) {
+  return (
+    <section className="expo-section">
+      <SectionHeader title="Shop by category" action="See all" />
+      <div className="category-grid">
+        {collections.slice(0, 8).map((collection) => (
+          <Link
+            key={collection.id}
+            to={`/collections/${collection.handle}`}
+            className="category-tile"
+          >
+            <div>
+              {collection.image ? (
+                <Image
+                  data={collection.image}
+                  alt={collection.image.altText || collection.title}
+                />
+              ) : null}
+            </div>
+            <span>{collection.title}</span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function OfferStrip() {
+  return (
+    <div className="offer-strip">
+      <b>%</b>
+      <div>
+        <strong>₹100 off on your first pantry order</strong>
+        <span>Use code FIRSTBOX above ₹499</span>
+      </div>
+    </div>
+  );
+}
+
+function Benefits() {
+  return (
+    <section className="home-benefits">
+      <div>
+        <b>◈</b>
+        <strong>Lab tested</strong>
+        <span>Every batch</span>
+      </div>
+      <div>
+        <b>↻</b>
+        <strong>Easy returns</strong>
+        <span>No questions</span>
+      </div>
+      <div>
+        <b>⌁</b>
+        <strong>Fast delivery</strong>
+        <span>At your door</span>
+      </div>
+    </section>
+  );
+}
+
+function SectionHeader({
+  title,
+  subtitle,
+  action,
+}: {
+  title: string;
+  subtitle?: string;
+  action?: string;
+}) {
+  return (
+    <div className="section-heading">
+      <div>
+        <h2>{title}</h2>
+        {subtitle ? <p>{subtitle}</p> : null}
+      </div>
+      {action ? (
+        <Link to="/collections">
+          {action} ›
+        </Link>
+      ) : null}
+    </div>
   );
 }
 
@@ -101,15 +200,15 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery | null>;
 }) {
   return (
-    <section
-      className="recommended-products"
-      aria-labelledby="recommended-products"
-    >
-      <h2 id="recommended-products">Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
+    <section className="recommended-products">
+      <SectionHeader
+        title="Bestsellers near you"
+        subtitle="Loved by Gharana homes"
+      />
+      <Suspense fallback={<p>Loading products…</p>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="recommended-products-grid">
+            <div className="products-scroll recommended-products-grid">
               {response
                 ? response.products.nodes.map((product) => (
                     <ProductItem key={product.id} product={product} />
@@ -119,7 +218,6 @@ function RecommendedProducts({
           )}
         </Await>
       </Suspense>
-      <br />
     </section>
   );
 }
@@ -139,7 +237,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
   query FeaturedCollection($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
+    collections(first: 8, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...FeaturedCollection
       }
@@ -165,10 +263,15 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       width
       height
     }
+    selectedOrFirstAvailableVariant {
+      id
+      availableForSale
+      title
+    }
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 8, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }

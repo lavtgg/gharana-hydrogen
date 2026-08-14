@@ -19,8 +19,8 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
   const giftCardInputId = useId();
 
   return (
-    <div aria-labelledby={summaryId} className={className}>
-      <h4 id={summaryId}>Totals</h4>
+    <div aria-labelledby={summaryId} className={`${className} cart-summary-card`}>
+      <h4 id={summaryId}>Order summary</h4>
       <dl role="group" className="cart-subtotal">
         <dt>Subtotal</dt>
         <dd>
@@ -50,11 +50,10 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
   if (!checkoutUrl) return null;
 
   return (
-    <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+    <div className="checkout-action">
+      <a className="button button-orange checkout-button" href={checkoutUrl} target="_self">
+        Continue to checkout <b>→</b>
       </a>
-      <br />
     </div>
   );
 }

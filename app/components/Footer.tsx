@@ -18,13 +18,40 @@ export function Footer({
       <Await resolve={footerPromise}>
         {(footer) => (
           <footer className="footer">
-            {footer?.menu && header.shop.primaryDomain?.url && (
-              <FooterMenu
-                menu={footer.menu}
-                primaryDomainUrl={header.shop.primaryDomain.url}
-                publicStoreDomain={publicStoreDomain}
-              />
-            )}
+            <div className="footer-inner">
+              <div className="footer-brand">
+                <span className="brand-mark">G</span>
+                <strong>GHARANA</strong>
+                <p>
+                  Pure pantry staples, sourced with care and delivered to your
+                  door. Lab-tested quality for every Indian home.
+                </p>
+              </div>
+              <div className="footer-trust">
+                <div>
+                  <strong>Lab tested</strong>
+                  <span>Every batch verified</span>
+                </div>
+                <div>
+                  <strong>Easy returns</strong>
+                  <span>Hassle-free policy</span>
+                </div>
+                <div>
+                  <strong>Fast delivery</strong>
+                  <span>Fresh to your door</span>
+                </div>
+              </div>
+              {footer?.menu && header.shop.primaryDomain?.url && (
+                <FooterMenu
+                  menu={footer.menu}
+                  primaryDomainUrl={header.shop.primaryDomain.url}
+                  publicStoreDomain={publicStoreDomain}
+                />
+              )}
+              <p className="footer-copy">
+                © {new Date().getFullYear()} Gharana. Pure pantry, delivered.
+              </p>
+            </div>
           </footer>
         )}
       </Await>
@@ -45,7 +72,6 @@ function FooterMenu({
     <nav className="footer-menu" role="navigation">
       {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
         if (!item.url) return null;
-        // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
           item.url.includes(publicStoreDomain) ||
@@ -58,13 +84,7 @@ function FooterMenu({
             {item.title}
           </a>
         ) : (
-          <NavLink
-            end
-            key={item.id}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
+          <NavLink end key={item.id} prefetch="intent" to={url}>
             {item.title}
           </NavLink>
         );
@@ -114,16 +134,3 @@ const FALLBACK_FOOTER_MENU = {
     },
   ],
 };
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
-  };
-}

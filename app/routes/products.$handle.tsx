@@ -15,7 +15,7 @@ import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
-    {title: `Hydrogen | ${data?.product.title ?? ''}`},
+    {title: `Gharana | ${data?.product.title ?? 'Product'}`},
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -99,26 +99,22 @@ export default function Product() {
 
   return (
     <div className="product">
-      <ProductImage image={selectedVariant?.image} />
+      <div className="product-gallery">
+        <ProductImage image={selectedVariant?.image} />
+      </div>
       <div className="product-main">
+        <p className="eyebrow">Gharana Pantry</p>
         <h1>{title}</h1>
         <ProductPrice
           price={selectedVariant?.price}
           compareAtPrice={selectedVariant?.compareAtPrice}
         />
-        <br />
         <ProductForm
           productOptions={productOptions}
           selectedVariant={selectedVariant}
         />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
+        <h2 className="product-description-heading">Good to know</h2>
         <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
       </div>
       <Analytics.ProductView
         data={{
